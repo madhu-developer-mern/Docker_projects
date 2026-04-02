@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Dashboard Visuals</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1e293b;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: #64748b;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .metric-title {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .metric-change {
+      font-size: 13px;
+      color: #16a34a;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .chart-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .chart-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 300px;
+    }
+
+    .progress-section {
+      display: grid;
+      gap: 14px;
+    }
+
+    .progress-item {
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .mini-box {
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .mini-box h3 {
+      margin: 0;
+      font-size: 14px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .mini-box p {
+      margin: 10px 0 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 700px) {
+      .chart-wrapper {
+        height: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Random Dashboard Visuals</h1>
+    <p class="subtitle">Single-file HTML with cards, bar chart, line chart, pie chart, doughnut chart, and progress visuals.</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="metric-title">Total Sales</div>
+        <div class="metric-value">$48,290</div>
+        <div class="metric-change">+12.4% this month</div>
+      </div>
+      <div class="card">
+        <div class="metric-title">New Users</div>
+        <div class="metric-value">1,284</div>
+        <div class="metric-change">+8.1% this week</div>
+      </div>
+      <div class="card">
+        <div class="metric-title">Orders</div>
+        <div class="metric-value">932</div>
+        <div class="metric-change">+5.7% today</div>
+      </div>
+      <div class="card">
+        <div class="metric-title">Bounce Rate</div>
+        <div class="metric-value">21%</div>
+        <div class="metric-change" style="color:#dc2626;">-2.3% improved</div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="chart-card">
+        <div class="chart-title">Monthly Revenue - Bar Chart</div>
+        <div class="chart-wrapper">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Traffic Trend - Line Chart</div>
+        <div class="chart-wrapper">
+          <canvas id="lineChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Traffic Sources - Pie Chart</div>
+        <div class="chart-wrapper">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Orders by Category - Doughnut Chart</div>
+        <div class="chart-wrapper">
+          <canvas id="doughnutChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Goal Progress</div>
+        <div class="progress-section">
+          <div class="progress-item">
+            <div class="progress-header">
+              <span>Revenue Target</span>
+              <span>78%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 78%; background:#3b82f6;"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-header">
+              <span>Customer Growth</span>
+              <span>61%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 61%; background:#22c55e;"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-header">
+              <span>Product Launch</span>
+              <span>89%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 89%; background:#f59e0b;"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-header">
+              <span>Support Resolution</span>
+              <span>72%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 72%; background:#ef4444;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Mini Visual Summary</div>
+        <div class="mini-grid">
+          <div class="mini-box">
+            <h3>Active Users</h3>
+            <p>4.8K</p>
+          </div>
+          <div class="mini-box">
+            <h3>Conversions</h3>
+            <p>312</p>
+          </div>
+          <div class="mini-box">
+            <h3>Returns</h3>
+            <p>26</p>
+          </div>
+          <div class="mini-box">
+            <h3>Tickets</h3>
+            <p>94</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    new Chart(document.getElementById("barChart"), {
+      type: "bar",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [{
+          label: "Revenue",
+          data: [12000, 19000, 15000, 22000, 18000, 25000, 21000],
+          backgroundColor: [
+            "#3b82f6",
+            "#60a5fa",
+            "#93c5fd",
+            "#2563eb",
+            "#1d4ed8",
+            "#38bdf8",
+            "#0ea5e9"
+          ],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("lineChart"), {
+      type: "line",
+      data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [{
+          label: "Visitors",
+          data: [220, 310, 280, 390, 420, 370, 460],
+          borderColor: "#22c55e",
+          backgroundColor: "rgba(34, 197, 94, 0.15)",
+          fill: true,
+          tension: 0.35,
+          pointRadius: 4,
+          pointBackgroundColor: "#22c55e"
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+
+    new Chart(document.getElementById("pieChart"), {
+      type: "pie",
+      data: {
+        labels: ["Organic", "Paid", "Referral", "Social"],
+        datasets: [{
+          data: [35, 25, 20, 20],
+          backgroundColor: ["#3b82f6", "#22c55e", "#f59e0b", "#ef4444"]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+
+    new Chart(document.getElementById("doughnutChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Electronics", "Clothing", "Food", "Other"],
+        datasets: [{
+          data: [40, 25, 20, 15],
+          backgroundColor: ["#8b5cf6", "#06b6d4", "#f97316", "#94a3b8"]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "65%"
+      }
+    });
+  </script>
+</body>
+</html>
