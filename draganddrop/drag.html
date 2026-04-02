@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drag and Drop Cards</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1e293b;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: #64748b;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .column {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      min-height: 500px;
+    }
+
+    .column h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+    }
+
+    .dropzone {
+      min-height: 420px;
+      padding: 8px;
+      border: 2px dashed transparent;
+      border-radius: 14px;
+      transition: 0.2s ease;
+    }
+
+    .dropzone.drag-over {
+      background: #eff6ff;
+      border-color: #60a5fa;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      cursor: grab;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .card.dragging {
+      opacity: 0.5;
+      transform: rotate(2deg);
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .card-text {
+      margin: 0 0 12px;
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .blue { background: #3b82f6; }
+    .green { background: #22c55e; }
+    .orange { background: #f59e0b; }
+    .red { background: #ef4444; }
+    .purple { background: #8b5cf6; }
+
+    @media (max-width: 700px) {
+      .container {
+        padding: 16px;
+      }
+
+      .column {
+        min-height: auto;
+      }
+
+      .dropzone {
+        min-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Drag and Drop Cards Board</h1>
+    <p class="subtitle">Move cards between columns by dragging and dropping.</p>
+
+    <div class="board">
+      <div class="column">
+        <h2>To Do</h2>
+        <div class="dropzone">
+          <div class="card" draggable="true">
+            <div class="card-title">Design Landing Page</div>
+            <div class="card-text">Create hero section, feature blocks, and CTA layout for the new website.</div>
+            <span class="tag blue">Design</span>
+          </div>
+
+          <div class="card" draggable="true">
+            <div class="card-title">Prepare Dashboard Metrics</div>
+            <div class="card-text">Collect sample KPI values and define cards for sales, users, and revenue.</div>
+            <span class="tag green">Analytics</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <h2>In Progress</h2>
+        <div class="dropzone">
+          <div class="card" draggable="true">
+            <div class="card-title">Build Chart UI</div>
+            <div class="card-text">Implement bar chart, line chart, and pie chart components in one page.</div>
+            <span class="tag orange">Frontend</span>
+          </div>
+
+          <div class="card" draggable="true">
+            <div class="card-title">API Integration</div>
+            <div class="card-text">Connect frontend cards to backend API and test dummy response rendering.</div>
+            <span class="tag purple">Backend</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <h2>Done</h2>
+        <div class="dropzone">
+          <div class="card" draggable="true">
+            <div class="card-title">Create Wireframe</div>
+            <div class="card-text">Finished low-fidelity mockup for dashboard layout and navigation blocks.</div>
+            <span class="tag red">Completed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll(".card");
+    const dropzones = document.querySelectorAll(".dropzone");
+
+    let draggedCard = null;
+
+    cards.forEach((card) => {
+      card.addEventListener("dragstart", () => {
+        draggedCard = card;
+        card.classList.add("dragging");
+      });
+
+      card.addEventListener("dragend", () => {
+        card.classList.remove("dragging");
+        draggedCard = null;
+      });
+    });
+
+    dropzones.forEach((zone) => {
+      zone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        zone.classList.add("drag-over");
+      });
+
+      zone.addEventListener("dragleave", () => {
+        zone.classList.remove("drag-over");
+      });
+
+      zone.addEventListener("drop", () => {
+        zone.classList.remove("drag-over");
+        if (draggedCard) {
+          zone.appendChild(draggedCard);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
